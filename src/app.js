@@ -3,7 +3,6 @@ import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
 import patientRoutes from './routes/patient.routes.js';
 import cookieParser from 'cookie-parser';
-import tasks from './routes/tasks.routes.js';
 
 const app = express();
 
@@ -13,7 +12,6 @@ app.use(cookieParser());
 
 app.use('/api', authRoutes);
 app.use('/api', patientRoutes);
-app.use('/api', tasks);
 
 
 export default app;
