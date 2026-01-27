@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { register, login, logout, profile } from '../controllers/auth.controllers.js';
 import { authRequired } from '../middlewares/validateToken.js';
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
+import patientRoutes from './routes/patient.routes.js';
 import cookieParser from 'cookie-parser';
 import tasks from './routes/tasks.routes.js';
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api', authRoutes);
+app.use('/api', patientRoutes);
 app.use('/api', tasks);
 
 
