@@ -41,7 +41,7 @@ const patientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    medical_gistories:[medicalHistorySchema]
+    medical_histories:[medicalHistorySchema]
 });
 
 const Patient = mongoose.model("Patient", patientSchema);

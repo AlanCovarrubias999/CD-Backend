@@ -7,10 +7,19 @@ export const getPatients = async(req, res) => {
 };
 
 export const createPatient = async(req, res) => {
-    const { name, age, gender, phone_number } = req.body;
-    const newPatient = new Patient({ name, age, gender, phone_number });
-    const savedPatient = await newPatient.save();
-    res.json({ message: 'Paciente creado exitosamente', savedPatient });
+    try {
+        const { name, age, gender, phone_number, medical_histories } = req.body;
+
+        const newPatient = new Patient({ name, age, gender, phone_number, medical_histories });
+
+        const savedPatient = await newPatient.save();
+
+    res.status(201).json({ message: 'Paciente creado exitosamente', savedPatient });
+    } catch (error) {
+        console.error('Error al crear el paciente:', error);
+        res.status(500).json({ message: 'Error al crear el paciente' });
+        
+    }
 };
 
 export const getPatientById = async(req, res) => {
