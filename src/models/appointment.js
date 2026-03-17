@@ -16,7 +16,7 @@ const appointmentSchema = new mongoose.Schema({
   notes: String,
   status: {
     type: String,
-    default: "pending",
+    default: "Pendiente",
   },
   createdAt: {
     type: Date,
