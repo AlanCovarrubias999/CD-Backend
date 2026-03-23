@@ -1,9 +1,9 @@
 import Appointment from "../models/appointment.js";
 
 export const createAppointment = async (req, res) => {
-    const { patient, date, time, notes } = req.body;
+    const { patient, date, time, notes, status } = req.body;
     try {
-        const newAppointment = new Appointment({ patient, date, time, notes });
+        const newAppointment = new Appointment({ patient, date, time, notes, status });
         const savedAppointment = await newAppointment.save();
         res.status(201).json({ message: "Cita creada exitosamente", savedAppointment });
     } catch (error) {
