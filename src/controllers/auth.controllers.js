@@ -52,7 +52,12 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Credenciales incorrectas" });
 
         const token = await createAccessToken({ id: userFound._id });
-        res.cookie('token', token);
+        res.cookie('token', token,{
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60 * 1000
+        });
         res.json({
             id: userFound._id,
             email: userFound.email,
@@ -69,9 +74,13 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-    res.cookie('token', '', { expires: new Date(0) });
-    res.sendStatus(200);
-
+    res.cookie('token', '', { 
+        httpOnly: true,
+        secure: true,      // OBLIGATORIO para HTTPS (Render)
+        sameSite: 'none',  // OBLIGATORIO para dominios cruzados
+        expires: new Date(0) 
+    });
+    return res.sendStatus(200);
 };
 
 export const profile = async (req, res) => {
