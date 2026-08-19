@@ -41,7 +41,23 @@ const patientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    medical_histories:[medicalHistorySchema]
+    medical_histories:[medicalHistorySchema],
+    // Estado vigente mostrado en el expediente del paciente.
+    odontogram: [
+        {
+            tooth_number: Number,
+            status: String,
+            notes: String
+        }
+    ],
+    // Punto de partida para reconstruir el estado al editar o eliminar una cita.
+    odontogram_base: [
+        {
+            tooth_number: Number,
+            status: String,
+            notes: String
+        }
+    ]
 });
 
 const Patient = mongoose.model("Patient", patientSchema);

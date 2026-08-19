@@ -14,6 +14,14 @@ const appointmentSchema = new mongoose.Schema({
     required: true,
   },
   notes: String,
+  // Solo se guardan los dientes modificados durante esta cita.
+  odontogram_changes: [
+    {
+      tooth_number: Number,
+      status: String,
+      notes: String,
+    },
+  ],
   status: {
     type: String,
     required: true,

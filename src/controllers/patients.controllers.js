@@ -8,9 +8,19 @@ export const getPatients = async(req, res) => {
 
 export const createPatient = async(req, res) => {
     try {
-        const { name, age, gender, phone_number, medical_histories } = req.body;
+        const { name, age, gender, phone_number, medical_histories, odontogram = [] } = req.body;
 
-        const newPatient = new Patient({ name, age, gender, phone_number, medical_histories });
+        const legacyOdontogram = medical_histories?.[0]?.odontogram || [];
+        const currentOdontogram = odontogram.length ? odontogram : legacyOdontogram;
+        const newPatient = new Patient({
+            name,
+            age,
+            gender,
+            phone_number,
+            medical_histories,
+            odontogram: currentOdontogram,
+            odontogram_base: currentOdontogram,
+        });
 
         const savedPatient = await newPatient.save();
 
@@ -35,7 +45,16 @@ export const deletePatientById = async(req, res) => {
 }
 
 export const updatePatientById = async(req, res) => {
-    const updatedPatient = await Patient.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedPatient) return res.status(404).json({ message: 'Paciente no encontrado' });
-    res.json({ message: 'Paciente actualizado exitosamente', updatedPatient });
+    try {
+        const update = { ...req.body };
+        if (Array.isArray(update.odontogram)) {
+            update.odontogram_base = update.odontogram;
+        }
+        const updatedPatient = await Patient.findByIdAndUpdate(req.params.id, update, { new: true });
+        if (!updatedPatient) return res.status(404).json({ message: 'Paciente no encontrado' });
+        res.json({ message: 'Paciente actualizado exitosamente', updatedPatient });
+    } catch (error) {
+        console.error('Error al actualizar el paciente:', error);
+        res.status(500).json({ message: 'Error al actualizar el paciente' });
+    }
 }
