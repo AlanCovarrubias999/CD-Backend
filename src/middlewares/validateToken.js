@@ -11,5 +11,4 @@ export const authRequired = (req, res, next) => {
         req.user = user;
         next();
     });
-    console.log("Token from cookies:", token);
 }

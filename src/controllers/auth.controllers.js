@@ -34,8 +34,6 @@ export const register = async (req, res) => {
         console.error("Error al registrar el usuario:", error);
         res.status(500).send("Error al registrar el usuario");
     }
-
-    console.log(email, password, username);
 };
 
 export const login = async (req, res) => {
@@ -45,7 +43,7 @@ export const login = async (req, res) => {
 
         const userFound = await User.findOne({ username });
 
-        if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" });
+        if (!userFound) return res.status(400).json({ message: "Credenciales incorrectas" });
 
         const isMatch = await bcrypt.compare(password, userFound.password);
 
@@ -70,7 +68,6 @@ export const login = async (req, res) => {
         res.status(500).send("Error al registrar el usuario");
     }
 
-    console.log( password, username);
 };
 
 export const logout = (req, res) => {
