@@ -74,7 +74,30 @@ export const createAppointment = async (req, res) => {
 
 export const getAppointments = async (req, res) => {
   try {
-    const appointments = await Appointment.find();
+    const { from, to } = req.query;
+    const filter = {};
+
+    if (from || to) {
+      filter.date = {};
+
+      if (from) {
+        const start = new Date(`${from}T00:00:00.000Z`);
+        if (Number.isNaN(start.getTime())) {
+          return res.status(400).json({ message: "La fecha inicial no es válida" });
+        }
+        filter.date.$gte = start;
+      }
+
+      if (to) {
+        const end = new Date(`${to}T23:59:59.999Z`);
+        if (Number.isNaN(end.getTime())) {
+          return res.status(400).json({ message: "La fecha final no es válida" });
+        }
+        filter.date.$lte = end;
+      }
+    }
+
+    const appointments = await Appointment.find(filter).sort({ date: 1, time: 1 });
     res.json(appointments);
   } catch (error) {
     console.error("Error al obtener las citas:", error);
